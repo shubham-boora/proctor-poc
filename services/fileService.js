@@ -4,7 +4,11 @@ const sharp = require('sharp');
 
 class FileService {
     constructor() {
-        this.uploadDir = 'uploads';
+        // Use /tmp directory for Vercel serverless environment
+        const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+        const baseDir = isVercel ? '/tmp' : '.';
+        
+        this.uploadDir = path.join(baseDir, 'uploads');
         this.referenceDir = path.join(this.uploadDir, 'reference');
         this.proctoringDir = path.join(this.uploadDir, 'proctoring');
         
@@ -20,7 +24,7 @@ class FileService {
             await fs.mkdir(this.uploadDir, { recursive: true });
             await fs.mkdir(this.referenceDir, { recursive: true });
             await fs.mkdir(this.proctoringDir, { recursive: true });
-            console.log('Upload directories initialized');
+            console.log('Upload directories initialized at:', this.uploadDir);
         } catch (error) {
             console.error('Failed to initialize directories:', error);
         }

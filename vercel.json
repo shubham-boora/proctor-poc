@@ -1,0 +1,35 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "server.js"
+        },
+        {
+            "src": "/health",
+            "dest": "server.js"
+        },
+        {
+            "src": "/frontend/(.*)",
+            "dest": "server.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "server.js"
+        }
+    ],
+    "functions": {
+        "server.js": {
+            "maxDuration": 60
+        }
+    },
+    "env": {
+        "NODE_ENV": "production"
+    }
+}

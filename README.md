@@ -196,13 +196,41 @@ The system includes comprehensive error handling for:
 - AI service failures and rate limits
 - Session management errors
 
-## Security Considerations
+## Security Features
 
 - Input validation for all uploads
 - File type restrictions
 - Size limits on uploads and requests
 - API key protection through environment variables
 - CORS configuration for cross-origin requests
+
+## Deployment
+
+### Local Development
+Follow the installation steps above for local development.
+
+### Vercel Deployment (Recommended)
+For quick deployment to Vercel:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Set environment variables in Vercel dashboard:
+# - OPENAI_API_KEY
+# - GEMINI_API_KEY
+# - NODE_ENV=production
+```
+
+📋 **See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for detailed deployment instructions**
+
+### Other Platforms
+- **Heroku**: Add `Procfile` with `web: node server.js`
+- **Railway**: Connect your GitHub repo and deploy
+- **DigitalOcean**: Use App Platform with Node.js buildpack
 
 ## Development
 
@@ -244,4 +272,3 @@ For issues and questions:
 3. Make your changes
 4. Add tests if applicable
 5. Submit a pull request
->>>>>>> f87be81 (Initial commit)
