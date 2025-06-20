@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Proctoring System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> AI Proctoring System</h1>
+                <p>Secure online exam monitoring with AI-powered violation detection</p>
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">Server Status:</span>
+                    <span id="server-status" class="status-value offline">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Total Cost:</span>
+                    <span id="total-cost" class="status-value">$0.00</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Step 1: Reference Upload -->
+            <section class="step-section" id="reference-section">
+                <div class="step-header">
+                    <h2><span class="step-number">1</span> Upload Reference Image</h2>
+                    <p>Upload an image of the approved exam environment</p>
+                </div>
+                
+                <div class="upload-area" id="reference-upload">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drop reference image here or <span class="upload-link">browse</span></p>
+                        <p class="upload-info">Supports JPEG, PNG, WebP (max 10MB)</p>
+                    </div>
+                    <input type="file" id="reference-file" accept="image/*" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label for="exam-description">Exam Description:</label>
+                    <input type="text" id="exam-description" placeholder="e.g., Standard exam room setup" value="Standard exam environment">
+                </div>
+
+                <div class="form-group">
+                    <label for="exam-type">Exam Type:</label>
+                    <select id="exam-type">
+                        <option value="general">General</option>
+                        <option value="midterm">Midterm</option>
+                        <option value="final">Final</option>
+                        <option value="quiz">Quiz</option>
+                        <option value="practice">Practice</option>
+                    </select>
+                </div>
+
+                <button id="upload-reference-btn" class="btn btn-primary" disabled>
+                    <i class="fas fa-upload"></i> Upload Reference
+                </button>
+
+                <div id="reference-result" class="result-section" style="display: none;">
+                    <h3>Reference Uploaded Successfully</h3>
+                    <div class="session-info">
+                        <p><strong>Session ID:</strong> <span id="session-id"></span></p>
+                        <p><strong>Description:</strong> <span id="uploaded-description"></span></p>
+                        <p><strong>Exam Type:</strong> <span id="uploaded-exam-type"></span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Analysis -->
+            <section class="step-section" id="analysis-section" style="display: none;">
+                <div class="step-header">
+                    <h2><span class="step-number">2</span> Analyze Proctoring Images</h2>
+                    <p>Upload exam images to detect potential violations</p>
+                </div>
+
+                <div class="upload-area" id="analysis-upload">
+                    <div class="upload-content">
+                        <i class="fas fa-images"></i>
+                        <p>Drop exam images here or <span class="upload-link">browse</span></p>
+                        <p class="upload-info">Select up to 5 images (max 10MB each)</p>
+                    </div>
+                    <input type="file" id="analysis-files" accept="image/*" multiple hidden>
+                </div>
+
+                <div class="selected-files" id="selected-files" style="display: none;">
+                    <h4>Selected Images:</h4>
+                    <div class="file-list" id="file-list"></div>
+                </div>
+
+                <div class="analysis-settings">
+                    <div class="form-group">
+                        <label for="student-id">Student ID:</label>
+                        <input type="text" id="student-id" placeholder="Enter student ID">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ai-provider">AI Provider:</label>
+                        <select id="ai-provider">
+                            <option value="openai">OpenAI GPT</option>
+                            <option value="gemini">Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model-name">Model:</label>
+                        <select id="model-name">
+                            <!-- Options will be populated dynamically based on selected AI provider -->
+                        </select>
+                    </div>
+                </div>
+
+                <button id="analyze-btn" class="btn btn-primary" disabled>
+                    <i class="fas fa-search"></i> Analyze Images
+                </button>
+
+                <div id="analysis-progress" class="progress-section" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text">Analyzing images with AI...</p>
+                </div>
+
+                <div id="analysis-result" class="result-section" style="display: none;">
+                    <h3>Analysis Complete</h3>
+                    <div class="analysis-summary">
+                        <div class="summary-item">
+                            <label>Analysis ID:</label>
+                            <span id="analysis-id"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Processing Time:</label>
+                            <span id="processing-time"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Cost:</label>
+                            <span id="analysis-cost"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Images Analyzed:</label>
+                            <span id="image-count"></span>
+                        </div>
+                    </div>
+                    <div class="analysis-content">
+                        <h4>AI Analysis Report:</h4>
+                        <div id="analysis-text" class="analysis-report"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Session History -->
+            <section class="step-section" id="history-section" style="display: none;">
+                <div class="step-header">
+                    <h2><span class="step-number">3</span> Session History</h2>
+                    <p>View detailed session information and analysis history</p>
+                </div>
+
+                <div id="session-details" class="session-details">
+                    <!-- Session details will be populated here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Supported Models</h4>
+                    <ul>
+                        <li>OpenAI: GPT-4o, GPT-4o Mini, GPT-4 Turbo, GPT-4.1, GPT-4.1 Mini, GPT-Image-1</li>
+                        <li>Gemini: 1.5 Pro/Flash, 2.0 Flash/Lite, 2.5 Pro/Flash/Lite</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Detection Capabilities</h4>
+                    <ul>
+                        <li>Unauthorized devices & materials</li>
+                        <li>Environmental changes</li>
+                        <li>Suspicious behavior</li>
+                        <li>Multiple people detection</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Actions</h4>
+                    <button id="clear-data-btn" class="btn btn-danger btn-small">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                    <button id="refresh-status-btn" class="btn btn-secondary btn-small">
+                        <i class="fas fa-refresh"></i> Refresh Status
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "ai-proctoring-server",
+  "version": "1.0.0",
+  "description": "AI-powered online proctoring system using OpenAI GPT and Google Gemini for automated exam monitoring and cheating detection",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "production": "NODE_ENV=production node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "proctoring",
+    "ai",
+    "exam-monitoring",
+    "openai",
+    "gemini",
+    "computer-vision",
+    "cheating-detection",
+    "online-exams"
+  ],
+  "author": "AI Proctoring Team",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.24.1",
+    "sharp": "^0.33.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ai-proctoring-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/ai-proctoring-server/issues"
+  },
+  "homepage": "https://github.com/your-username/ai-proctoring-server#readme"
+}
